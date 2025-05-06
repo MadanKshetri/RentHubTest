@@ -8,7 +8,7 @@ export default function RootLayout() {
 			<Stack>
 				<Stack.Screen
 					name="index"
-					options={{ title: "Home", headerShown: true }}
+					options={{ title: "RentHub", headerShown: true }}
 				/>
 				<Stack.Screen
 					name="cart"

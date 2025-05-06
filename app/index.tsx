@@ -1,22 +1,21 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import React from "react";
+import {  FlatList } from "react-native";
 import products from "../assets/products.json";
 import ProductListItem from "../components/ProductListItem";
-import {Button, ButtonText} from '@/components/ui/button'
-import "@/global.css";
+ import "@/global.css";
+
 
 
 export default function HomeScreen() {
 
-    return(
-        <Button Variant="outline">
-            <ButtonText>Press me</ButtonText>
-        </Button>
-    )
-	// return (
-	// 	<FlatList
-	// 		data={products}
-	// 		renderItem={({ item }) => <ProductListItem product={item} />}
-	// 	/>
-	// );
+   
+	return (
+		<FlatList
+			data={products}
+            numColumns={2}
+            contentContainerClassName="gap-2"
+            columnWrapperClassName="gap-2"
+			renderItem={({ item }) => <ProductListItem product={item} />}
+            
+		/>
+	);
 }
