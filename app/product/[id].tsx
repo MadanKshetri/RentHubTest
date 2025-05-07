@@ -1,6 +1,6 @@
 import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
-import products from '@/assets/products.json'
+import products from "@/assets/products.json";
 import { View } from "react-native";
 import React from "react";
 import { Box } from "@/components/ui/box";
@@ -10,16 +10,19 @@ import { Heading } from "@/components/ui/heading";
 import { Image } from "@/components/ui/image";
 import { VStack } from "@/components/ui/vstack";
 import { Link } from "expo-router";
+import { Stack, Slot } from "expo-router";
 export default function ProductDetailsScreen() {
-	const { id } = useLocalSearchParams<{id:string}>();
-    const product = products.find((p) => p.id ===Number(id));
+	const { id } = useLocalSearchParams<{ id: string }>();
+	const product = products.find((p) => p.id === Number(id));
 
-    if (!product){
-        return <Text> Product not found</Text>;
-    }
+	if (!product) {
+		return <Text> Product not found</Text>;
+	}
 
 	return (
-        <Card className="p-5 rounded-lg max-w-[560px]  flex-1">
+		<Box className=" flex-1 items-center p-3">
+			<Stack.Screen options={{ title: product.name, headerShown: true }} />
+			<Card className="p-5 rounded-lg max-w-[960px]  flex-1">
 				<Image
 					source={{
 						uri: product.image,
@@ -51,5 +54,6 @@ export default function ProductDetailsScreen() {
 					</Button>
 				</Box>
 			</Card>
-    )
+		</Box>
+	);
 }
