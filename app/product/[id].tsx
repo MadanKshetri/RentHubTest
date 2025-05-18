@@ -1,7 +1,7 @@
 import { Text } from "@/components/ui/text";
 import { useLocalSearchParams } from "expo-router";
 import products from "@/assets/products.json";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import React from "react";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
@@ -11,13 +11,33 @@ import { Image } from "@/components/ui/image";
 import { VStack } from "@/components/ui/vstack";
 import { Link } from "expo-router";
 import { Stack, Slot } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductById } from "@/api/products";
+import { useCart } from "@/store/cartStore";
 export default function ProductDetailsScreen() {
-	const { id } = useLocalSearchParams<{ id: string }>();
-	const product = products.find((p) => p.id === Number(id));
+	const { id } = useLocalSearchParams<{ id: string }>(); 
+	// const product = products.find((p) => p.id === Number(id));
 
-	if (!product) {
-		return <Text> Product not found</Text>;
+	const addProduct = useCart((state)=> state.addProduct);
+	const cartItems = useCart((state)=> state.items);
+	console.log(JSON.stringify(cartItems, null, 2))
+	const { data: product, isFetching, error } = useQuery({
+		queryKey: ['products', id], 	
+		queryFn: () => fetchProductById(Number(id)),
+	});
+      
+	const addToCart = () => {
+		addProduct(product);
 	}
+
+		if (isFetching){
+			return <ActivityIndicator/>
+		}
+
+	if (error){
+       <Text>Product not found</Text>
+	}
+
 
 	return (
 		<Box className=" flex-1 items-center p-3">
@@ -41,7 +61,7 @@ export default function ProductDetailsScreen() {
 					<Text size="sm">{product.description}</Text>
 				</VStack>
 				<Box className="flex-col sm:flex-row">
-					<Button className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1">
+					<Button onPress={addToCart} className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1">
 						<ButtonText size="sm">Rent Now</ButtonText>
 					</Button>
 					<Button

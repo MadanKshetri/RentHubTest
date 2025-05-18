@@ -1,5 +1,8 @@
-import { Tabs } from "expo-router";
+import { Link, Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Pressable } from "react-native";
+import { ShoppingCart, User } from "lucide-react-native";
+import { Icon } from "@/components/ui/icon";
 
 export default function TabLayout() {
 	return (
@@ -11,13 +14,22 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
+					headerRight: () => (
+						<Link href={"/login"} asChild>
+							<Pressable className="flex-row gap-2, p-4"  >
+								<Icon as={User} />
+							</Pressable>
+						</Link>
+					),
+
 					title: "Home",
-					headerShown: false,
+					// headerShown: false,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "home-sharp" : "home-outline"}
 							color={color}
 							size={24}
+							
 						/>
 					),
 				}}

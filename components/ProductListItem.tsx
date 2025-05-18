@@ -7,7 +7,7 @@ import { Text } from "@/components/ui/text";
 import { Link } from "expo-router";
 
 export default function ProductListItem({ product }) {
-	console.log("Rerender")
+	// console.log("Rerender")
 	return (
 		<Link href={`/product/${product.id}`}asChild>
 			<Pressable className="flex-1">
