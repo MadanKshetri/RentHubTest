@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 import { listProducts } from "@/api/products";
 import { useQuery } from "@tanstack/react-query";
 import { View } from "lucide-react-native";
+import { Text } from "@/components/ui/text";
 
 export default function HomeScreen() {
 	const [refreshing, setRefreshing] = useState(false);
-	const { data, isFetching, error } = useQuery({
+	const { data, isLoading, error } = useQuery({
 		queryKey: ["products"],
 		queryFn: listProducts,
 	});
@@ -39,24 +40,25 @@ export default function HomeScreen() {
 	};
 
 
-if (isFetching){
+if (isLoading){
 	return <ActivityIndicator/>
 }
 
 if (error){
 	return <View> 
-	
+			<Text>Error</Text>
 		</View> 
 }
+console.log(data)
 
 	return (
-		<FlatList
+		data && <FlatList
 			key={numColumns}
-			data={data}
+			data={data.data}
 			numColumns={numColumns}
-			contentContainerClassName="gap-2   "
+			contentContainerClassName="gap-2"
 			columnWrapperClassName="gap-2"
-			renderItem={({ item }) => <ProductListItem product={item} />}
+			renderItem={({ item }) => <ProductListItem product={item} isLoading={isLoading} />}
 			refreshing={refreshing}
 		/>
 	);

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "npx cross-env RCT_METRO_PORT=8000 expo start",
+    "start": "npx cross-env RCT_METRO_PORT=8001 expo start",
     "android": "DARK_MODE=media expo start --android",
     "ios": "DARK_MODE=media expo start --ios",
     "web": "DARK_MODE=media expo start --web"
