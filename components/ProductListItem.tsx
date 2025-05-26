@@ -5,8 +5,11 @@ import { Heading } from "@/components/ui/heading";
 import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 import { Link } from "expo-router";
+import { TItemData } from "@/api/products";
 
-export default function ProductListItem({ product, isLoading }) {
+export default function ProductListItem({ product, isLoading }:{
+	product:TItemData, isLoading:boolean
+}) {
 	console.log("Rerender")
 	// console.log(product.assets[0].url)
 	return (
@@ -30,7 +33,7 @@ export default function ProductListItem({ product, isLoading }) {
 					${product.rate}
 				</Heading>
 				<Heading size="md" className="mb-4">
-					Location:{product.location.address}
+					Location:{product.address}
 				</Heading>
 			</Card>
 			</Pressable>

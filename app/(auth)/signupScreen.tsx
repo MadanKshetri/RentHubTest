@@ -99,7 +99,7 @@ export default function RegisterScreen() {
 	const signUpMutation = useMutation({
 		mutationFn: () => signup({ address, phone, email, fullName, password }),
 		onSuccess: (data) => {
-			console.log("✅ Success signup:", data);
+				console.log("✅ Success signup:", data);
 			Alert.alert("Success", "Registration successful!");
 			router.push("(auth)/login");
 		},
@@ -120,7 +120,7 @@ export default function RegisterScreen() {
 		<ScrollView>
 			<FormControl className="p-4 border rounded-lg max-w-[500px] border-outline-300 bg-white m-2">
 				<VStack space="xl">
-					<Heading className="text-typography-900 leading-3 pt-3">
+					<Heading className="text-typography-900 leading-3 pt-3 text-base/6 ">
 						Register
 					</Heading>
 

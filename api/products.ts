@@ -8,10 +8,29 @@
 // }
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
+export type TItemData = {
+	id:string
+	name:string,
+	address:string,
+	assets: {
+		id:string,
+		url:string,
+		name:string
+	}[],
+	rate:number,
+	description?:string,
+}
+type FetchItemResponse = {
+	message: string,
+	data: TItemData[],
+	pagination:{
 
+	}
+
+}
 export async function listProducts() {
 	const res = await fetch(`${API_URL}/item`);
-	const data = await res.json();
+	const data:FetchItemResponse = await res.json();
 	if (!res.ok) {
 		throw new Error("Error");
 	}

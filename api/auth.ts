@@ -75,6 +75,7 @@ export async function signup(data: TSignupData) {
 		body: JSON.stringify(data),
 	});
 	const response = await res.json();
+	console.log(response)
 	if (!res.ok) {
 		throw new Error(response?.message || "Failed to register");
 	}

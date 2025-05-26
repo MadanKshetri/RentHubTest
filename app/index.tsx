@@ -1,3 +1,75 @@
+// import { FlatList, useWindowDimensions, RefreshControl, ActivityIndicator } from "react-native";
+// // import products from "@/assets/products.json";
+// import ProductListItem from "@/components/ProductListItem";
+// import "@/global.css";
+// import { useBreakpointValue } from "@/components/ui/utils/use-break-point-value";
+// import { useEffect, useState } from "react";
+// import { listProducts } from "@/api/products";
+// import { useQuery } from "@tanstack/react-query";
+// import { View } from "lucide-react-native";
+// import { Text } from "@/components/ui/text";
+// import { ScrollView } from "react-native";
+// import profile from "./(tabs)/Profile";
+// export default function HomeScreen() {
+// 	const [refreshing, setRefreshing] = useState(false);
+// 	const {  data,isLoading, error } = useQuery({
+// 		queryKey: ["products"],
+// 		queryFn: listProducts,
+// 	});
+
+// 	//this is the basic way of fetching the product from the API so   we use tanstack query for Global state management
+// 	// const [products, setProduct] = useState();
+// 	// useEffect(() => {
+// 	// 	const fetchProducts = async () => {
+// 	// 		const data = await listProducts();
+// 	// 		setProduct(data);
+// 	// 	};
+// 	// 	fetchProducts();
+// 	// }, []);
+
+// 	// const{width} = useWindowDimensions();
+// 	// const numColumns = width > 700 ? 3:2
+
+// 	const numColumns = useBreakpointValue({
+// 		default: 2,
+// 		sm: 3,
+// 		xl: 4,
+// 	}) as number;
+
+// 	const onfresh = () => {
+// 		setRefreshing(false);
+// 		setTimeout(() => setRefreshing(false), 2000);
+// 	};
+
+
+// if (isLoading){
+// 	return <ActivityIndicator/>
+// }
+
+// if (error){
+// 	return <View> 
+// 			<Text>Error</Text>
+// 		</View> 
+// }
+
+// 	return (
+// 		data && <ScrollView>
+// 		<FlatList
+// 			key={numColumns}
+// 			data={data.data}
+// 			numColumns={numColumns}
+// 			contentContainerClassName="gap-2"
+// 			columnWrapperClassName="gap-2"
+// 			renderItem={({item}) => <ProductListItem product={item} isLoading={isLoading} />}
+// 			refreshing={refreshing}
+// 			scrollEnabled = {false}
+// 		/>
+// 		</ScrollView>
+// 		);
+// }
+
+
+
 import {
 	StyleSheet,
 	Text,
@@ -8,7 +80,7 @@ import {
 import { Link } from "expo-router";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-	import Ionicons from "@expo/vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { AntDesign } from "@expo/vector-icons";
 import GoogleIcon from "@/components/GoogleIcon";

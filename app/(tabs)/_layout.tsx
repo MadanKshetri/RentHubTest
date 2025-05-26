@@ -3,6 +3,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable } from "react-native";
 import { ShoppingCart, User } from "lucide-react-native";
 import { Icon } from "@/components/ui/icon";
+import Header from "@/components/Header";
+import SearchBar from "@/components/SearcBar";
 
 export default function TabLayout() {
 	return (
@@ -14,16 +16,11 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					headerRight: () => (
-						<Link href={"/login"} asChild>
-							<Pressable className="flex-row gap-2, p-4"  >
-								<Icon as={User} />
-							</Pressable>
-						</Link>
-					),
+
+					header: () =><Header/>,
 
 					title: "Home",
-					// headerShown: false,
+					headerShown: true,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "home-sharp" : "home-outline"}
@@ -31,14 +28,17 @@ export default function TabLayout() {
 							size={24}
 							
 						/>
+						
 					),
 				}}
 			/>
+			
+
 			<Tabs.Screen
 				name="Search"
 				options={{
 					title: "Search",
-					headerShown: true,
+					headerShown: false,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "search" : "search-outline"}
@@ -83,7 +83,7 @@ export default function TabLayout() {
 				name="Profile"
 				options={{
 					title: "Profile",
-					headerShown: true,
+					headerShown:false,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "person" : "person-outline"}
@@ -96,3 +96,5 @@ export default function TabLayout() {
 		</Tabs>
 	);
 }
+
+

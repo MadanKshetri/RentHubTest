@@ -1,4 +1,9 @@
-import { FlatList, useWindowDimensions, RefreshControl, ActivityIndicator } from "react-native";
+import {
+	FlatList,
+	useWindowDimensions,
+	RefreshControl,
+	ActivityIndicator,
+} from "react-native";
 // import products from "@/assets/products.json";
 import ProductListItem from "@/components/ProductListItem";
 import "@/global.css";
@@ -8,6 +13,11 @@ import { listProducts } from "@/api/products";
 import { useQuery } from "@tanstack/react-query";
 import { View } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
+import { ScrollView } from "react-native";
+import { Stack } from "expo-router";
+import SearchBar from "@/components/SearcBar";
+import Categories from "@/components/categories";
+import FeaturedItems from "@/components/FeaturedItem";
 
 export default function HomeScreen() {
 	const [refreshing, setRefreshing] = useState(false);
@@ -28,6 +38,7 @@ export default function HomeScreen() {
 
 	// const{width} = useWindowDimensions();
 	// const numColumns = width > 700 ? 3:2
+
 	const numColumns = useBreakpointValue({
 		default: 2,
 		sm: 3,
@@ -39,27 +50,41 @@ export default function HomeScreen() {
 		setTimeout(() => setRefreshing(false), 2000);
 	};
 
+	if (isLoading) {
+		return <ActivityIndicator />;
+	}
 
-if (isLoading){
-	return <ActivityIndicator/>
-}
-
-if (error){
-	return <View> 
-			<Text>Error</Text>
-		</View> 
-}
-console.log(data)
+	if (error) {
+		return (
+			<View>
+				<Text>Error</Text>
+			</View>
+		);
+	}
 
 	return (
-		data && <FlatList
-			key={numColumns}
-			data={data.data}
-			numColumns={numColumns}
-			contentContainerClassName="gap-2"
-			columnWrapperClassName="gap-2"
-			renderItem={({ item }) => <ProductListItem product={item} isLoading={isLoading} />}
-			refreshing={refreshing}
-		/>
+		data && (
+			<>
+				<FlatList
+					key={numColumns}
+					data={data.data}
+					numColumns={numColumns}
+					contentContainerClassName="gap-2"
+					columnWrapperClassName="gap-2"
+					ListHeaderComponent={
+						<>
+						<Categories/>
+						<FeaturedItems/>
+						</>
+					}
+					renderItem={({ item }) => (
+						<ProductListItem product={item} isLoading={isLoading} />
+					)}
+					refreshing={refreshing}
+					scrollEnabled={true}
+				/>
+				
+			</>
+		)
 	);
 }

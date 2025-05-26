@@ -10,22 +10,37 @@ import { useState } from "react";
 import { HStack } from "@/components/ui/hstack";
 import { useMutation } from "@tanstack/react-query";
 import { login, signup } from "@/api/auth";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { router } from "expo-router";
+import { Redirect } from 'expo-router';
+import { useAuth } from "@/store/authStore";
+
 export default function loginScreen() {
+
+    const router = useRouter();
+
 	// useState is the react hook that allows functional components to manage state	(i.e store and update data dynamically)
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	const setUser = useAuth(s => s.setUser);
+	const setToken = useAuth(s =>s. setToken);
+	const isLoggedIn = useAuth((s => !!s.token));
+
 	//useMutation hook is using from React Query (also know as transtack query). its a hook that helps you perform data modifying operations like PUT, POST, DELETE(i.e not fetching) it is mostly used in handling the things  like submitting the form, logging and posting a data. It gives tools to manage loading , success, error easily.
 
 	const loginMutation = useMutation({
 		mutationFn: () => login(email, password),
-		onSuccess: () => {
+		onSuccess: (data) => {
 			console.log("Success");
-		},
+			if (data.user && data.token){
+				setUser(data.user);
+				setToken(data.token);
+			}
+			router.replace("/(tabs)");
+		},	
 		onError: () => {
 			console.log("Error");
 		},
@@ -38,10 +53,14 @@ export default function loginScreen() {
 		});
 	};
 
+	if (isLoggedIn) {
+		return <Redirect href={"/"}/>
+	}
+
 	return (
 		<FormControl className="p-4 border rounded-lg max-w-[500px] border-outline-300 bg-white m-2">
 			<VStack space="xl">
-				<Heading className="text-typography-900 leading-3 pt-3">Login</Heading>
+				<Heading className="text-typography-900 leading-3 pt-3 text-base/6 ">Login</Heading>
 
 				{/* Email */}
 				<VStack space="xs">
@@ -72,7 +91,7 @@ export default function loginScreen() {
 					<Button
 						className="ml-auto flex-1"
 						variant="outline"
-						onPress={() => router.push("/(auth)/signupScreen")}
+						onPress={() => router.push("(auth)/signupScreen")}
 					>
 						<ButtonText>Sign up</ButtonText>
 					</Button>
