@@ -13,7 +13,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)/signupScreen" options={{ headerShown: false }} />
           <Stack.Screen name="product/[id]" options={{ title: "Product", headerShown: true }} />
-        </Stack>
+        </Stack>  
       </GluestackUIProvider>
     </QueryClientProvider>
   );

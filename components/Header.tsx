@@ -5,29 +5,42 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	TextInput,
+	Animated,
+	ScrollView
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Bold } from "lucide-react-native";
-import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
-import Animated from "react-native-reanimated";
+
+// import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 import { Link } from "expo-router";
 import loginScreen from "@/app/(auth)/login";
+import { useEffect, useRef } from "react";
 
-const Header = () => {
+ const Header = () => {
 	const insets = useSafeAreaInsets();
+	const heightAnim = useRef(new Animated.Value(0)).current;
+
+useEffect(() => {
+  Animated.timing(heightAnim, {
+    toValue: 100,
+    duration: 1000,
+    useNativeDriver: false, // layout animations don't support native driver
+  }).start();
+})	
+
 	return (
+		<ScrollView stickyHeaderHiddenOnScroll={false}>
 		<View style={[styles.container, { paddingTop: insets.top }]}>
 			<View style={styles.topHeader}>
 				<Text style={styles.logoTxt}>RentHub</Text>
 				<View style={styles.buttonContainer}>
-					<Link href={"/(auth)/login"}></Link>
+					
 					<View>
 						<Link href={"/(auth)/login"} asChild>
 							<TouchableOpacity style={styles.loginButton}>
 								<Text style={styles.loginText}>Log in</Text>
 							</TouchableOpacity>
-						</Link>
+						</Link>	
 					</View>
                      <View>
 						<Link href={"/(auth)/signupScreen"} asChild>
@@ -39,7 +52,7 @@ const Header = () => {
 				</View>
 			</View>
 			<View style={styles.slogan}>
-				<Animated.Text style={styles.sloganTxt}> Rent Anything</Animated.Text>
+				<Text style={styles.sloganTxt}> Rent Anything</Text>
 				<Text style={styles.sloganTxtB}> Earn Easily !</Text>
 			</View>
 			<View style={styles.searchBar}>
@@ -56,6 +69,8 @@ const Header = () => {
 				/>
 			</View>
 		</View>
+		</ScrollView>
+		
 	);
 };
 
@@ -123,23 +138,21 @@ const styles = StyleSheet.create({
 	},
 
 	searchBar: {
-			flexDirection: "row",
-		justifyContent: "flex-start",
-		marginBottom: 30,
-		backgroundColor: "white",
-		borderRadius: 15,
-		alignItems: "center",
-		gap: 5,
+		flexDirection:"row",
+		gap:5,
+		marginBottom:25,
+		paddingHorizontal:12,
+		backgroundColor:"#fff",
+		borderRadius:10,
 	},
 	searchIcon: {
-		flex: 1,
-		paddingHorizontal: 12,
+		marginTop:7,
+
 	},
 	txtInput: {
-		marginRight: 5,
-		height: 45,
-		fontSize: 16,
+		backgroundColor:"white"
+		
 	},
 });
+ export default Header;
 
-export default Header;

@@ -11,16 +11,55 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
-// import Constants from "expo-constants";
-
+import { Picker } from "@react-native-picker/picker";
+import { useEffect } from "react";
+import { ActivityIndicator } from "react-native";
+import { useAuth } from "@/store/authStore";
 export default function Post() {
 	const router = useRouter();
+	const token = useAuth(a=>a.token)
+
+	const [categories, setCategories] = useState([]);
+	const [loadingCategories, setLoadingCategories] = useState(true);
+	const [categoryId, setCategoryId] = useState("");
+	const [errors, setErrors]= useState<{message:string,code:number}>()
+
+	useEffect(() => {
+		const fetchCategories = async () => {
+			try {
+				const response = await fetch("http://40.81.243.193/category",
+					{
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					}
+				);
+				const data = await response.json();
+				console.log(data)
+				if(data && data.statusCode && data.statusCode==401){
+					console.log("fodsjlkf")
+					setErrors({
+						message: data.message,
+						code: data.statusCode
+					})
+				}
+				setCategories(data.data); // assuming data is an array of categories
+				console.log(errors,"dfkhasdjfkl;ashjd;fklhas;lkdfjhkj;a")
+			} catch (error) {
+				console.error("Failed to fetch categories:", error);
+				Alert.alert("Error", "Unable to load categories.");
+			} finally {
+				setLoadingCategories(false);
+			}
+		};
+
+		fetchCategories();
+	}, []);
 
 	const [name, setName] = useState("");
 	const [rate, setRate] = useState("");
 	const [rateType, setRateType] = useState("");
 	const [photos, setPhotos] = useState<string[]>([]);
-	const [categoryId, setCategoryId] = useState("");
 	const [location, setLocation] = useState("");
 	const [deposit, setDeposit] = useState("");
 	const [description, setDescription] = useState("");
@@ -45,79 +84,20 @@ export default function Post() {
 		}
 	};
 
-	// const handleSubmit = async () => {
-	//     console.log("Submit pressed");
-	//     if (
-	//         !name ||
-	//         !rate ||
-	//         !rateType ||
-	//         photos.length === 0 ||
-	//         !categoryId ||
-	//         !location ||
-	//         !deposit
-	//     ) {
-	//         Alert.alert("Missing fields", "Please fill all required fields.");
-	//         return;
-	//     }
-
-	//     const formData = new FormData();
-	//     formData.append("name", name);
-	//     formData.append("rate", rate);
-	//     formData.append("rateType", rateType);
-	//     formData.append("categoryId", categoryId);
-	//     formData.append("deposit", deposit);
-	//     formData.append("description", description);
-	//     formData.append("location", JSON.stringify({ address: location }));
-
-	//     photos.forEach((uri) => {
-	//         const fileName = uri.split("/").pop() || "photo.jpg";
-	//         const fileExt = fileName.split(".").pop() || "jpg";
-	//         const mimeType = `image/${fileExt}`;
-
-	//         formData.append("photos", {
-	//             uri,
-	//             name: fileName,
-	//             type: mimeType,
-	//         } as any);
-	//     });
-
-	//     try {
-	//         const response = await fetch("http://40.81.243.193:3000/item", {
-	//             method: "POST",
-	//             body: formData,
-
-	//         });
-
-	//         if (!response.ok) {
-	//             throw new Error("Network response was not ok");
-	//         }
-
-	//         const data = await response.json();
-	//         console.log("Submission successful:", data);
-	//         Alert.alert("Success", "Item submitted successfully!");
-	//         // optionally reset form or navigate
-	//         // router.push('/some-page');
-	//     } catch (error) {
-	//         console.error("Error submitting form:", error);
-	//         Alert.alert("Submission Error", "There was an error submitting your data.");
-	//     }
-	// };
-	// const API_URL = Constants.expoConfig?.extra?.apiUrl;
-
 	const handleSubmit = async () => {
 		console.log("Submit pressed");
-		// if (
-		// 	!name ||
-		// 	!rate ||
-		// 	!rateType ||
-		// 	photos.length === 0 ||
-		// 	!categoryId ||
-		// 	!location ||
-		// 	!deposit
-		// ) {
-		// 	Alert.alert("Missing fields", "Please fill all required fields.");
-		// 	return;
-		// }
+		if (
+			!name ||
+			!rate ||
+			!rateType ||
+			photos.length === 0 ||
+			!categoryId ||
+			!location ||
+			!deposit
+		) {
+			Alert.alert("Missing fields", "Please fill all required fields.");
+			return;
+		}
 
 		const formData = new FormData();
 		formData.append("name", name);
@@ -169,7 +149,7 @@ export default function Post() {
 	};
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
+		!errors && <ScrollView contentContainerStyle={styles.container}>
 			<Text style={styles.label}>Item Name *</Text>
 			<TextInput style={styles.input} value={name} onChangeText={setName} />
 
@@ -189,13 +169,21 @@ export default function Post() {
 				onChangeText={setRateType}
 			/>
 
-			<Text style={styles.label}>Category ID *</Text>
-			<TextInput
-				style={styles.input}
-				placeholder="Enter category ID"
-				value={categoryId}
-				onChangeText={setCategoryId}
-			/>
+			<Text style={styles.label}>Category *</Text>
+			{loadingCategories ? (
+				<ActivityIndicator size="small" color="#000" />
+			) : (
+				<View style={styles.pickerContainer}>
+					<Picker
+						onValueChange={(value) => setCategoryId(value)}
+					>
+						<Picker.Item label="Select a category" value="" />
+						{categories.map((cat) => (
+							<Picker.Item key={cat.id} label={cat.name} value={cat.id} />
+						))}
+					</Picker>
+				</View>
+			)}
 
 			<Text style={styles.label}>Deposit Amount *</Text>
 			<TextInput
@@ -256,5 +244,13 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		marginBottom: 10,
 		backgroundColor: "#f9f9f9",
+	},
+	pickerContainer: {
+		borderWidth: 1,
+		borderColor: "#ccc",
+		borderRadius: 8,
+		marginBottom: 10,
+		backgroundColor: "#f9f9f9",
+		overflow: "hidden",
 	},
 });

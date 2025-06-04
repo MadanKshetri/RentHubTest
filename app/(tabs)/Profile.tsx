@@ -21,11 +21,11 @@ type Props = {};
 export default function index() {
 	return (
 		<>
-			<ImageBackground
-				source={require("@/assets/rentHub.png")}
+			{/* <ImageBackground
+				source={require("@/assets/")}
 				style={{ flex: 1 }}
 				resizeMode="cover"
-			>
+			> */}
 				<View style={styles.conatiner}>
 					<LinearGradient
 						colors={["transparent", "rgba(255, 255, 255, 0.9)"]}
@@ -100,7 +100,7 @@ export default function index() {
 						</View>
 					</LinearGradient>
 				</View>
-			</ImageBackground>
+			{/* </ImageBackground> */}
 		</>
 	);
 }

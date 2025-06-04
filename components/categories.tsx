@@ -25,7 +25,7 @@ const Categories = () => {
     { id: 4, icon: 'box', label: 'Furniture', color: '#10B981' },
     { id: 5, icon: 'headphones', label: 'Audio', color: '#EC4899' },
     { id: 6, icon: 'tool', label: 'Tools', color: '#6366F1' },
-  ];
+  ];  
 
   return (
     <View style={styles.container}>

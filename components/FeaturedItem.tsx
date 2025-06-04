@@ -129,6 +129,41 @@ const FeaturedItems = () => {
       image: 'https://www.shutterstock.com/image-photo/drone-takeoff-quadcopter-lamp-propellers-600nw-2552216067.jpg',
       Location: "Pokhara"
     },
+    {
+      id: '7',
+      title: 'Drone',
+      price: 'Rs 900',
+      image: 'https://www.shutterstock.com/image-photo/drone-takeoff-quadcopter-lamp-propellers-600nw-2552216067.jpg',
+      Location: "Pokhara"
+    },
+    {
+      id: '8',
+      title: 'Drone',
+      price: 'Rs 900',
+      image: 'https://www.shutterstock.com/image-photo/drone-takeoff-quadcopter-lamp-propellers-600nw-2552216067.jpg',
+      Location: "Pokhara"
+    },
+    {
+      id: '9',
+      title: 'Drone',
+      price: 'Rs 900',
+      image: 'https://www.shutterstock.com/image-photo/drone-takeoff-quadcopter-lamp-propellers-600nw-2552216067.jpg',
+      Location: "Pokhara"
+    },
+    {
+      id: '10',
+      title: 'Drone',
+      price: 'Rs 900',
+      image: 'https://www.shutterstock.com/image-photo/drone-takeoff-quadcopter-lamp-propellers-600nw-2552216067.jpg',
+      Location: "Pokhara"
+    },
+    {
+      id: '11',
+      title: 'Drone',
+      price: 'Rs 900',
+      image: 'https://www.shutterstock.com/image-photo/drone-takeoff-quadcopter-lamp-propellers-600nw-2552216067.jpg',
+      Location: "Pokhara"
+    },
   ];
 
   return (

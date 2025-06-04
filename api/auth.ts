@@ -81,4 +81,3 @@ export async function signup(data: TSignupData) {
 	}
 	return response;
 }
-
